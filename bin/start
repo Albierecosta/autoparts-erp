@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "=== AutoPeças ERP - Iniciando ==="
+echo "RAILS_ENV: $RAILS_ENV"
+echo "PORT: $PORT"
+echo "DATABASE_URL: ${DATABASE_URL:+CONFIGURADO}"
+echo "SECRET_KEY_BASE: ${SECRET_KEY_BASE:+CONFIGURADO}"
+echo "RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:+CONFIGURADO}"
+
+echo "=== Rodando migrations ==="
+bundle exec rails db:migrate
+MIGRATE_STATUS=$?
+echo "=== Migrations status: $MIGRATE_STATUS ==="
+
+echo "=== Iniciando servidor ==="
+exec bundle exec rails server -p ${PORT:-3000} -b 0.0.0.0
