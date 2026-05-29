@@ -39,7 +39,7 @@ gem "pg_search"
 gem "active_storage_validations"
 
 # Money handling
-gem "money-rails", "~> 1.15"
+gem "money-rails", "~> 3.0"
 
 # Environment variables
 gem "dotenv-rails"
