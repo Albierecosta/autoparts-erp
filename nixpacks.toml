@@ -1,13 +1,12 @@
 [phases.setup]
-nixPkgs = ["ruby", "nodejs", "postgresql", "libpq", "openssl", "libyaml", "zlib", "vips"]
+nixPkgs = ["ruby_3_3", "nodejs_20", "postgresql", "libpq", "openssl", "libyaml", "zlib", "vips", "pkg-config"]
 
 [phases.install]
 cmds = ["bundle install"]
 
 [phases.build]
 cmds = [
-  "bundle exec rails tailwindcss:build",
-  "SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile"
+  "SECRET_KEY_BASE_DUMMY=1 bundle exec rails tailwindcss:build assets:precompile"
 ]
 
 [start]
