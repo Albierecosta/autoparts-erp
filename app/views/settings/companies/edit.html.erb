@@ -1,0 +1,50 @@
+<% content_for :title, "Configurações" %>
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Configurações da Empresa</h1>
+</div>
+
+<%= form_with model: @company, url: settings_company_path, method: :patch, class: "space-y-6 max-w-2xl" do |f| %>
+  <% if @company.errors.any? %>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <ul class="text-sm text-red-700 list-disc list-inside"><% @company.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Dados da Empresa</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="sm:col-span-2">
+        <%= f.label :name, "Razão Social *", class: "form-label" %>
+        <%= f.text_field :name, class: "form-input" %>
+      </div>
+      <div><%= f.label :trade_name, "Nome Fantasia", class: "form-label" %><%= f.text_field :trade_name, class: "form-input" %></div>
+      <div><%= f.label :cnpj, "CNPJ", class: "form-label" %><%= f.text_field :cnpj, class: "form-input font-mono" %></div>
+      <div><%= f.label :phone, "Telefone", class: "form-label" %><%= f.text_field :phone, class: "form-input" %></div>
+      <div><%= f.label :email, "E-mail", class: "form-label" %><%= f.email_field :email, class: "form-input" %></div>
+      <div class="sm:col-span-2"><%= f.label :address, "Endereço", class: "form-label" %><%= f.text_field :address, class: "form-input" %></div>
+      <div><%= f.label :city, "Cidade", class: "form-label" %><%= f.text_field :city, class: "form-input" %></div>
+      <div><%= f.label :state, "Estado", class: "form-label" %><%= f.text_field :state, maxlength: 2, class: "form-input" %></div>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Configurações do Sistema</h3>
+    <div>
+      <%= f.label :receipt_footer, "Rodapé do Cupom", class: "form-label" %>
+      <%= f.text_area :receipt_footer, rows: 2, class: "form-input resize-none",
+          value: @company.settings["receipt_footer"], name: "company[settings][receipt_footer]" %>
+    </div>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <%= f.check_box :ecommerce_enabled, class: "w-4 h-4 rounded border-gray-300 text-blue-600" %>
+      <div>
+        <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Ativar E-commerce</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Habilita a loja online para venda via internet</p>
+      </div>
+    </label>
+  </div>
+
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancelar", settings_company_path, class: "px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 transition-colors" %>
+    <%= f.submit "Salvar Configurações", class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+  </div>
+<% end %>

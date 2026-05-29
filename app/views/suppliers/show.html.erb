@@ -1,0 +1,22 @@
+<% content_for :title, @supplier.name %>
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+      <%= link_to "Fornecedores", suppliers_path, class: "hover:text-gray-700 dark:hover:text-gray-200" %><span>/</span>
+      <span class="text-gray-900 dark:text-white"><%= @supplier.trade_name.presence || @supplier.name %></span>
+    </nav>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><%= @supplier.name %></h1>
+  </div>
+  <%= link_to edit_supplier_path(@supplier), class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg" do %>Editar<% end %>
+</div>
+
+<div class="max-w-2xl bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+  <dl class="grid grid-cols-2 gap-4 text-sm">
+    <div><dt class="text-gray-500 dark:text-gray-400">Nome Fantasia</dt><dd class="font-medium text-gray-900 dark:text-white mt-1"><%= @supplier.trade_name.presence || "-" %></dd></div>
+    <div><dt class="text-gray-500 dark:text-gray-400">CNPJ</dt><dd class="font-mono font-medium text-gray-900 dark:text-white mt-1"><%= @supplier.cnpj.presence || "-" %></dd></div>
+    <div><dt class="text-gray-500 dark:text-gray-400">Telefone</dt><dd class="font-medium text-gray-900 dark:text-white mt-1"><%= @supplier.phone.presence || "-" %></dd></div>
+    <div><dt class="text-gray-500 dark:text-gray-400">E-mail</dt><dd class="font-medium text-gray-900 dark:text-white mt-1"><%= @supplier.email.presence || "-" %></dd></div>
+    <div><dt class="text-gray-500 dark:text-gray-400">Contato</dt><dd class="font-medium text-gray-900 dark:text-white mt-1"><%= @supplier.contact_name.presence || "-" %></dd></div>
+    <div><dt class="text-gray-500 dark:text-gray-400">Cidade</dt><dd class="font-medium text-gray-900 dark:text-white mt-1"><%= [@supplier.city, @supplier.state].compact.join("/").presence || "-" %></dd></div>
+  </dl>
+</div>

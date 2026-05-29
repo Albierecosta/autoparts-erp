@@ -1,0 +1,157 @@
+<%= form_with model: [product], class: "space-y-6", data: { controller: "product-form" } do |f| %>
+  <% if product.errors.any? %>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <h3 class="text-sm font-medium text-red-800 mb-2">Por favor corrija os erros:</h3>
+      <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
+        <% product.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main info -->
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Informações Básicas</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <%= f.label :name, "Nome do Produto *", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.text_field :name, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Ex: Pastilha de Freio Dianteira" %>
+          </div>
+          <div>
+            <%= f.label :internal_code, "Código Interno", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.text_field :internal_code, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono", placeholder: "AP-001" %>
+          </div>
+          <div>
+            <%= f.label :sku, "SKU / Referência", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.text_field :sku, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" %>
+          </div>
+          <div>
+            <%= f.label :brand, "Marca", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.text_field :brand, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Ex: Bosch, Cofap, Monroe" %>
+          </div>
+          <div>
+            <%= f.label :barcode, "Código de Barras", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.text_field :barcode, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" %>
+          </div>
+          <div>
+            <%= f.label :category_id, "Categoria", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.select :category_id, options_from_collection_for_select(@categories, :id, :name, product.category_id),
+                { include_blank: "Selecione..." },
+                class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          </div>
+          <div>
+            <%= f.label :supplier_id, "Fornecedor", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.select :supplier_id, options_from_collection_for_select(@suppliers, :id, :name, product.supplier_id),
+                { include_blank: "Selecione..." },
+                class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          </div>
+          <div class="sm:col-span-2">
+            <%= f.label :description, "Descrição", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.text_area :description, rows: 3, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Preços</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <%= f.label :cost_price, "Preço de Custo", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm">R$</span>
+              <%= f.number_field :cost_price, step: 0.01, min: 0, class: "w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
+                  data: { "product-form-target": "costPrice", action: "input->product-form#calculateMargin" } %>
+            </div>
+          </div>
+          <div>
+            <%= f.label :sale_price, "Preço de Venda *", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm">R$</span>
+              <%= f.number_field :sale_price, step: 0.01, min: 0, class: "w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
+                  data: { "product-form-target": "salePrice", action: "input->product-form#calculateMargin" } %>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Margem</label>
+            <div class="flex items-center h-9 px-3 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg">
+              <span class="text-sm font-semibold text-green-600 dark:text-green-400" data-product-form-target="margin">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Estoque</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div>
+            <%= f.label :stock_quantity, "Estoque Atual", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.number_field :stock_quantity, min: 0, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          </div>
+          <div>
+            <%= f.label :min_stock, "Estoque Mínimo", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.number_field :min_stock, min: 0, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          </div>
+          <div>
+            <%= f.label :max_stock, "Estoque Máximo", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.number_field :max_stock, min: 0, class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          </div>
+          <div>
+            <%= f.label :stock_unit, "Unidade", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= f.select :stock_unit, options_for_select([["Unidade (un)", "un"], ["Par (par)", "par"], ["Conjunto (conj)", "conj"], ["Litro (L)", "L"], ["KG (kg)", "kg"]], product.stock_unit),
+                {},
+                class: "w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar options -->
+    <div class="space-y-6">
+      <!-- Status -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Status</h3>
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :active, class: "w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <span class="text-sm text-gray-700 dark:text-gray-300">Produto ativo</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :published, class: "w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <span class="text-sm text-gray-700 dark:text-gray-300">Publicar no e-commerce</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :featured, class: "w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <span class="text-sm text-gray-700 dark:text-gray-300">Produto em destaque</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Photos -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Fotos</h3>
+        <% if product.photos.attached? %>
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <% product.photos.each do |photo| %>
+              <div class="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <%= image_tag photo.variant(resize_to_fill: [100, 100]), class: "w-full h-full object-cover" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <%= f.file_field :photos, multiple: true, accept: "image/*",
+            class: "block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancelar", product.persisted? ? product_path(product) : products_path, class: "px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" %>
+    <%= f.submit product.persisted? ? "Salvar Alterações" : "Cadastrar Produto", class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer" %>
+  </div>
+<% end %>

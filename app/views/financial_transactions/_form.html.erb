@@ -1,0 +1,94 @@
+<%= form_with model: [transaction], class: "space-y-6" do |f| %>
+  <% if transaction.errors.any? %>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
+        <% transaction.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="max-w-2xl space-y-6">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <%= f.label :transaction_type, "Tipo *", class: "form-label" %>
+          <%= f.select :transaction_type,
+              options_for_select([["Receita", "income"], ["Despesa", "expense"]], transaction.transaction_type),
+              {}, class: "form-input" %>
+        </div>
+        <div>
+          <%= f.label :status, "Status", class: "form-label" %>
+          <%= f.select :status,
+              options_for_select([["Pendente", "pending"], ["Pago/Recebido", "paid"]], transaction.status),
+              {}, class: "form-input" %>
+        </div>
+        <div class="sm:col-span-2">
+          <%= f.label :description, "Descrição *", class: "form-label" %>
+          <%= f.text_field :description, class: "form-input", placeholder: "Descrição do lançamento" %>
+        </div>
+        <div>
+          <%= f.label :category, "Categoria", class: "form-label" %>
+          <%= f.select :category,
+              options_for_select([
+                ["Venda", "sale"], ["Serviço", "service"], ["Outras Receitas", "other_income"],
+                ["Compra", "purchase"], ["Folha de Pagamento", "payroll"],
+                ["Aluguel", "rent"], ["Utilidades", "utilities"], ["Outras Despesas", "other_expense"]
+              ], transaction.category),
+              { include_blank: "Selecione..." }, class: "form-input" %>
+        </div>
+        <div>
+          <%= f.label :payment_method, "Forma de Pagamento", class: "form-label" %>
+          <%= f.select :payment_method,
+              options_for_select([
+                ["Dinheiro", "cash"], ["Cartão de Crédito", "credit_card"],
+                ["Cartão de Débito", "debit_card"], ["PIX", "pix"],
+                ["Transferência", "bank_transfer"], ["Outro", "other"]
+              ], transaction.payment_method),
+              { include_blank: "Selecione..." }, class: "form-input" %>
+        </div>
+        <div>
+          <%= f.label :amount, "Valor *", class: "form-label" %>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm">R$</span>
+            <%= f.number_field :amount, step: 0.01, min: 0.01, class: "form-input pl-9", placeholder: "0,00" %>
+          </div>
+        </div>
+        <div>
+          <%= f.label :due_date, "Vencimento", class: "form-label" %>
+          <%= f.date_field :due_date, class: "form-input" %>
+        </div>
+        <% if transaction.status == "paid" %>
+          <div>
+            <%= f.label :paid_at, "Data do Pagamento", class: "form-label" %>
+            <%= f.date_field :paid_at, class: "form-input" %>
+          </div>
+        <% end %>
+        <div>
+          <%= f.label :reference_number, "Número de Referência", class: "form-label" %>
+          <%= f.text_field :reference_number, class: "form-input font-mono", placeholder: "NF, Boleto, etc." %>
+        </div>
+        <div>
+          <%= f.label :customer_id, "Cliente (opcional)", class: "form-label" %>
+          <%= f.select :customer_id, options_from_collection_for_select(@customers, :id, :name, transaction.customer_id),
+              { include_blank: "Nenhum" }, class: "form-input" %>
+        </div>
+        <div>
+          <%= f.label :supplier_id, "Fornecedor (opcional)", class: "form-label" %>
+          <%= f.select :supplier_id, options_from_collection_for_select(@suppliers, :id, :name, transaction.supplier_id),
+              { include_blank: "Nenhum" }, class: "form-input" %>
+        </div>
+        <div class="sm:col-span-2">
+          <%= f.label :notes, "Observações", class: "form-label" %>
+          <%= f.text_area :notes, rows: 2, class: "form-input resize-none" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-3">
+      <%= link_to "Cancelar", financial_transactions_path,
+          class: "px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 transition-colors" %>
+      <%= f.submit transaction.persisted? ? "Salvar Alterações" : "Criar Lançamento",
+          class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+    </div>
+  </div>
+<% end %>

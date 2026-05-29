@@ -1,0 +1,166 @@
+<% content_for :title, "Dashboard" %>
+
+<!-- Header -->
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400"><%= Date.current.strftime("%A, %d de %B de %Y").capitalize %></p>
+  </div>
+  <%= link_to new_sale_path, class: "flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Nova Venda
+  <% end %>
+</div>
+
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <!-- Today Sales -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Vendas Hoje</span>
+      <div class="w-9 h-9 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900 dark:text-white">R$ <%= number_with_precision(@today_revenue, precision: 2, delimiter: ".") %></p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"><%= @today_sales_count %> venda(s) confirmada(s)</p>
+  </div>
+
+  <!-- Month Revenue -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Receita do Mês</span>
+      <div class="w-9 h-9 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900 dark:text-white">R$ <%= number_with_precision(@month_revenue, precision: 2, delimiter: ".") %></p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"><%= Date.current.strftime("%B %Y").capitalize %></p>
+  </div>
+
+  <!-- Receivables -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">A Receber</span>
+      <div class="w-9 h-9 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900 dark:text-white">R$ <%= number_with_precision(@pending_receivables, precision: 2, delimiter: ".") %></p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Contas pendentes</p>
+  </div>
+
+  <!-- Low Stock Alert -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Estoque Baixo</span>
+      <div class="w-9 h-9 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= @low_stock_products.count %></p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">produto(s) precisam reposição</p>
+  </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Recent Sales -->
+  <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+    <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="font-semibold text-gray-900 dark:text-white">Últimas Vendas</h2>
+      <%= link_to "Ver todas", sales_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" %>
+    </div>
+    <div class="divide-y divide-gray-100 dark:divide-gray-700">
+      <% if @recent_sales.empty? %>
+        <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+          <svg class="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <p>Nenhuma venda ainda hoje</p>
+        </div>
+      <% else %>
+        <% @recent_sales.each do |sale| %>
+          <div class="px-5 py-3 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-semibold">
+                #<%= sale.number %>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                  <%= sale.customer&.name || "Cliente avulso" %>
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  <%= sale.created_at.strftime("%d/%m %H:%M") %> · <%= sale.sale_items.count %> item(s)
+                </p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-semibold text-gray-900 dark:text-white">R$ <%= number_with_precision(sale.total, precision: 2) %></p>
+              <p class="text-xs text-gray-500 dark:text-gray-400"><%= t("payment_methods.#{sale.payment_method}", default: "-") %></p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Right column -->
+  <div class="space-y-6">
+    <!-- Low Stock Alert -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="font-semibold text-gray-900 dark:text-white">Estoque Baixo</h2>
+        <%= link_to "Ver todos", products_path(low_stock: "true"), class: "text-sm text-blue-600 hover:text-blue-700 font-medium" %>
+      </div>
+      <div class="p-3 space-y-2">
+        <% if @low_stock_products.empty? %>
+          <p class="text-sm text-gray-500 dark:text-gray-400 text-center py-4">Estoque em dia!</p>
+        <% else %>
+          <% @low_stock_products.first(5).each do |product| %>
+            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 dark:text-white truncate"><%= product.name %></p>
+                <p class="text-xs text-gray-500 dark:text-gray-400"><%= product.internal_code %></p>
+              </div>
+              <div class="ml-3 flex-shrink-0">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= product.stock_quantity == 0 ? "bg-red-100 text-red-800" : "bg-orange-100 text-orange-800" %>">
+                  <%= product.stock_quantity %> <%= product.stock_unit %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Cash Flow Mini -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+      <h2 class="font-semibold text-gray-900 dark:text-white mb-4">Fluxo de Caixa (7 dias)</h2>
+      <div class="space-y-2">
+        <% @cash_flow_data.last(5).each do |day| %>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-500 dark:text-gray-400 w-14 flex-shrink-0"><%= day[:date].strftime("%d/%m") %></span>
+            <div class="flex-1">
+              <% max_val = [@cash_flow_data.map { |d| d[:revenue] }.max, 1].max %>
+              <div class="flex gap-1 h-2">
+                <div class="bg-green-400 rounded-full" style="width: <%= [(day[:revenue].to_f / max_val * 100).round, 100].min %>%"></div>
+              </div>
+            </div>
+            <span class="text-xs font-medium text-gray-900 dark:text-white w-24 text-right">R$ <%= number_with_precision(day[:revenue], precision: 0) %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

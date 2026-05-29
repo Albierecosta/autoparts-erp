@@ -1,0 +1,7 @@
+<% active = current_page?(path) || (request.path.start_with?(path.split("?").first) && path != root_path) %>
+<%= link_to path, class: "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors #{active ? "bg-blue-600 text-white" : "text-slate-300 hover:bg-slate-700 hover:text-white"}" do %>
+  <span class="mr-3 flex-shrink-0 w-5 h-5">
+    <%= icon_svg(icon) %>
+  </span>
+  <%= label %>
+<% end %>

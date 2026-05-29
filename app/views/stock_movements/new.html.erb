@@ -1,0 +1,83 @@
+<% content_for :title, "Movimentação de Estoque" %>
+
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Registrar Movimentação</h1>
+</div>
+
+<div class="max-w-2xl">
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <%= form_with model: [@movement], url: stock_movements_path, class: "space-y-4" do |f| %>
+      <% if @movement.errors.any? %>
+        <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+          <ul class="text-sm text-red-700 list-disc list-inside">
+            <% @movement.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% unless @product %>
+        <div>
+          <label class="form-label">Produto *</label>
+          <%= f.select :product_id, options_from_collection_for_select(@products, :id, :name, @movement.product_id),
+              { include_blank: "Selecione o produto..." },
+              class: "form-input" %>
+        </div>
+      <% else %>
+        <%= f.hidden_field :product_id, value: @product.id %>
+        <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <p class="text-sm font-medium text-blue-900 dark:text-blue-300"><%= @product.name %></p>
+          <p class="text-xs text-blue-700 dark:text-blue-400">Estoque atual: <%= @product.stock_quantity %> <%= @product.stock_unit %></p>
+        </div>
+      <% end %>
+
+      <div>
+        <label class="form-label">Tipo de Movimentação *</label>
+        <%= f.select :movement_type, options_for_select([
+            ["Entrada", "entry"],
+            ["Saída", "exit"],
+            ["Compra (com atualização de custo)", "purchase"],
+            ["Devolução", "return"],
+            ["Ajuste de Estoque", "adjustment"]
+          ], @movement.movement_type),
+          { include_blank: "Selecione..." },
+          class: "form-input" %>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label">Quantidade *</label>
+          <%= f.number_field :quantity, class: "form-input", placeholder: "Ex: 10" %>
+        </div>
+        <div>
+          <label class="form-label">Custo Unitário</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm">R$</span>
+            <%= f.number_field :unit_cost, step: 0.01, class: "form-input pl-9", placeholder: "0,00" %>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="form-label">Fornecedor</label>
+        <%= f.select :supplier_id, options_from_collection_for_select(@suppliers, :id, :name, @movement.supplier_id),
+            { include_blank: "Nenhum" },
+            class: "form-input" %>
+      </div>
+
+      <div>
+        <label class="form-label">Número de Referência</label>
+        <%= f.text_field :reference_number, class: "form-input font-mono", placeholder: "NF, Pedido, etc." %>
+      </div>
+
+      <div>
+        <label class="form-label">Motivo / Observação</label>
+        <%= f.text_area :reason, rows: 2, class: "form-input resize-none" %>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <%= f.submit "Registrar Movimentação", class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+        <%= link_to "Cancelar", stock_movements_path, class: "px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+</div>

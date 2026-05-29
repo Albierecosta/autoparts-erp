@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title>Pedido</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <style>
+      @media print {
+        body { margin: 0; padding: 10px; }
+        .no-print { display: none !important; }
+        button { display: none; }
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-900 p-4">
+    <%= yield %>
+    <script>window.onload = function() { window.print(); }</script>
+  </body>
+</html>

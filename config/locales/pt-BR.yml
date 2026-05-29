@@ -1,0 +1,138 @@
+pt-BR:
+  roles:
+    admin: "Administrador"
+    manager: "Gerente"
+    operator: "Operador"
+
+  payment_methods:
+    cash: "Dinheiro"
+    credit_card: "Cartão de Crédito"
+    debit_card: "Cartão de Débito"
+    pix: "PIX"
+    bank_transfer: "Transferência Bancária"
+    other: "Outro"
+
+  sale_statuses:
+    pending: "Pendente"
+    confirmed: "Confirmada"
+    cancelled: "Cancelada"
+
+  sale_types:
+    sale: "Venda"
+    quote: "Orçamento"
+
+  stock_movement_types:
+    entry: "Entrada"
+    exit: "Saída"
+    adjustment: "Ajuste"
+    sale_out: "Venda"
+    purchase: "Compra"
+    return: "Devolução"
+
+  financial_categories:
+    sale: "Venda"
+    service: "Serviço"
+    other_income: "Outras Receitas"
+    purchase: "Compra"
+    payroll: "Folha de Pagamento"
+    rent: "Aluguel"
+    utilities: "Utilidades"
+    marketing: "Marketing"
+    other_expense: "Outras Despesas"
+
+  errors:
+    messages:
+      required: "é obrigatório(a)"
+      blank: "não pode ficar em branco"
+      taken: "já está em uso"
+      invalid: "é inválido"
+      not_a_number: "não é um número"
+      not_an_integer: "deve ser um número inteiro"
+      greater_than: "deve ser maior que %{count}"
+      greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+      less_than: "deve ser menor que %{count}"
+      less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+      other_than: "deve ser diferente de %{count}"
+      too_short: "é muito curto (mínimo %{count} caracteres)"
+      too_long: "é muito longo (máximo %{count} caracteres)"
+      wrong_length: "não tem o tamanho esperado (%{count} caracteres)"
+      inclusion: "não está incluído na lista"
+      exclusion: "está reservado"
+      confirmation: "não é igual a %{attribute}"
+      accepted: "deve ser aceito"
+      present: "deve ficar em branco"
+      too_many: "são muitos (máximo %{count})"
+      too_few: "são poucos (mínimo %{count})"
+
+  activerecord:
+    models:
+      company: "Empresa"
+      user: "Usuário"
+      product: "Produto"
+      category: "Categoria"
+      supplier: "Fornecedor"
+      customer: "Cliente"
+      sale: "Venda"
+      sale_item: "Item da venda"
+      stock_movement: "Movimentação de estoque"
+      financial_transaction: "Lançamento financeiro"
+      vehicle_make: "Marca do veículo"
+      vehicle_model: "Modelo do veículo"
+      vehicle_application: "Aplicação de veículo"
+      customer_vehicle: "Veículo do cliente"
+    attributes:
+      sale_item:
+        product: "Produto"
+        unit_price: "Preço unitário"
+        quantity: "Quantidade"
+        total: "Total"
+      sale:
+        number: "Número"
+        status: "Status"
+        sale_type: "Tipo"
+        total: "Total"
+        payment_method: "Forma de pagamento"
+        customer: "Cliente"
+      product:
+        name: "Nome"
+        internal_code: "Código interno"
+        sale_price: "Preço de venda"
+        cost_price: "Preço de custo"
+        stock_quantity: "Estoque atual"
+        min_stock: "Estoque mínimo"
+      user:
+        name: "Nome"
+        email: "E-mail"
+        password: "Senha"
+        role: "Perfil"
+      customer:
+        name: "Nome"
+        document: "Documento"
+        phone: "Telefone"
+      stock_movement:
+        movement_type: "Tipo de movimentação"
+        quantity: "Quantidade"
+      financial_transaction:
+        description: "Descrição"
+        amount: "Valor"
+        transaction_type: "Tipo"
+        status: "Status"
+    errors:
+      messages:
+        required: "é obrigatório(a)"
+        blank: "não pode ficar em branco"
+        taken: "já está em uso"
+        invalid: "é inválido"
+        not_a_number: "não é um número"
+        not_an_integer: "deve ser um número inteiro"
+        greater_than: "deve ser maior que %{count}"
+        greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+        less_than: "deve ser menor que %{count}"
+        less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+        too_short: "é muito curto (mínimo %{count} caracteres)"
+        too_long: "é muito longo (máximo %{count} caracteres)"
+        wrong_length: "não tem o tamanho esperado (%{count} caracteres)"
+        inclusion: "não está incluído na lista"
+        exclusion: "está reservado"
+        other_than: "deve ser diferente de %{count}"
+        confirmation: "não é igual a %{attribute}"

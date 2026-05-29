@@ -1,0 +1,81 @@
+<% content_for :title, @transaction.description %>
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+      <%= link_to "Financeiro", financial_transactions_path, class: "hover:text-gray-700 dark:hover:text-gray-200" %>
+      <span>/</span>
+      <span class="text-gray-900 dark:text-white"><%= @transaction.description %></span>
+    </nav>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><%= @transaction.description %></h1>
+  </div>
+  <div class="flex gap-3">
+    <%= link_to edit_financial_transaction_path(@transaction), class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg" do %>
+      Editar
+    <% end %>
+  </div>
+</div>
+
+<div class="max-w-2xl bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+  <dl class="grid grid-cols-2 gap-4 text-sm">
+    <div>
+      <dt class="text-gray-500 dark:text-gray-400">Tipo</dt>
+      <dd class="font-medium mt-1 <%= @transaction.income? ? "text-green-600" : "text-red-600" %>">
+        <%= @transaction.income? ? "Receita" : "Despesa" %>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-gray-500 dark:text-gray-400">Valor</dt>
+      <dd class="text-xl font-bold mt-1 <%= @transaction.income? ? "text-green-600" : "text-red-600" %>">
+        R$ <%= number_with_precision(@transaction.amount, precision: 2) %>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-gray-500 dark:text-gray-400">Status</dt>
+      <dd class="mt-1">
+        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium <%= financial_status_badge(@transaction.status) %>">
+          <%= @transaction.paid? ? "Pago" : "Pendente" %>
+        </span>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-gray-500 dark:text-gray-400">Vencimento</dt>
+      <dd class="font-medium text-gray-900 dark:text-white mt-1 <%= @transaction.overdue? ? "text-red-600" : "" %>">
+        <%= @transaction.due_date&.strftime("%d/%m/%Y") || "-" %>
+      </dd>
+    </div>
+    <% if @transaction.paid? %>
+      <div>
+        <dt class="text-gray-500 dark:text-gray-400">Data do Pagamento</dt>
+        <dd class="font-medium text-gray-900 dark:text-white mt-1"><%= @transaction.paid_at&.strftime("%d/%m/%Y") %></dd>
+      </div>
+    <% end %>
+    <div>
+      <dt class="text-gray-500 dark:text-gray-400">Forma de Pagamento</dt>
+      <dd class="font-medium text-gray-900 dark:text-white mt-1">
+        <%= t("payment_methods.#{@transaction.payment_method}", default: "-") %>
+      </dd>
+    </div>
+    <% if @transaction.customer %>
+      <div class="col-span-2">
+        <dt class="text-gray-500 dark:text-gray-400">Cliente</dt>
+        <dd class="font-medium text-gray-900 dark:text-white mt-1"><%= @transaction.customer.name %></dd>
+      </div>
+    <% end %>
+    <% if @transaction.notes.present? %>
+      <div class="col-span-2">
+        <dt class="text-gray-500 dark:text-gray-400">Observações</dt>
+        <dd class="text-gray-700 dark:text-gray-300 mt-1"><%= @transaction.notes %></dd>
+      </div>
+    <% end %>
+  </dl>
+
+  <% if @transaction.pending? && policy(@transaction).pay? %>
+    <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+      <%= button_to pay_financial_transaction_path(@transaction), method: :patch,
+          class: "px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg",
+          data: { turbo_confirm: "Confirmar baixa?" } do %>
+        Dar Baixa (Marcar como Pago)
+      <% end %>
+    </div>
+  <% end %>
+</div>

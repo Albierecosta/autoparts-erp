@@ -1,0 +1,131 @@
+<% content_for :title, "Vendas" %>
+
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Vendas</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400">Gerenciamento de vendas e orçamentos</p>
+  </div>
+  <div class="flex items-center gap-3">
+    <%= link_to new_sale_path(type: "quote"), class: "flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 transition-colors" do %>
+      Novo Orçamento
+    <% end %>
+    <%= link_to new_sale_path, class: "flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Nova Venda
+    <% end %>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-6">
+  <%= form_with url: sales_path, method: :get, class: "flex flex-wrap gap-3" do |f| %>
+    <div>
+      <%= f.select :status, options_for_select([["Todos os status", ""], ["Pendente", "pending"], ["Confirmado", "confirmed"], ["Cancelado", "cancelled"]], params[:status]),
+          {},
+          class: "px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+    <div>
+      <%= f.select :sale_type, options_for_select([["Todos os tipos", ""], ["Venda", "sale"], ["Orçamento", "quote"]], params[:sale_type]),
+          {},
+          class: "px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+    <div>
+      <%= f.date_field :start_date, value: params[:start_date], class: "px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+    <div>
+      <%= f.date_field :end_date, value: params[:end_date], class: "px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+    <%= f.submit "Filtrar", class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+  <% end %>
+</div>
+
+<!-- Sales list -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+  <% if @sales.empty? %>
+    <div class="p-12 text-center">
+      <svg class="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+      </svg>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhuma venda encontrada</h3>
+      <%= link_to new_sale_path, class: "inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg mt-2" do %>
+        Criar primeira venda
+      <% end %>
+    </div>
+  <% else %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700/50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">#</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Data</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cliente</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Itens</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pagamento</th>
+            <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total</th>
+            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+          <% @sales.each do |sale| %>
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+              <td class="px-4 py-3 text-sm font-mono font-medium text-blue-600 dark:text-blue-400">
+                <%= link_to "##{sale.number}", sale_path(sale) %>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                <%= sale.created_at.strftime("%d/%m/%y %H:%M") %>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                <%= sale.customer&.name || "Avulso" %>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                <%= sale.sale_items.count %> item(s)
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                <%= t("payment_methods.#{sale.payment_method}", default: "-") %>
+              </td>
+              <td class="px-4 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">
+                R$ <%= number_with_precision(sale.total, precision: 2) %>
+              </td>
+              <td class="px-4 py-3 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium <%= sale_status_badge(sale.status) %>">
+                  <%= t("sale_statuses.#{sale.status}") %>
+                </span>
+              </td>
+              <td class="px-4 py-3 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <%= link_to sale_path(sale), class: "p-1.5 text-gray-400 hover:text-blue-600 rounded transition-colors", title: "Ver" do %>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  <% end %>
+                  <% if sale.pending? %>
+                    <%= button_to confirm_sale_path(sale), method: :patch, class: "p-1.5 text-gray-400 hover:text-green-600 rounded transition-colors", title: "Confirmar", data: { turbo_confirm: "Confirmar esta venda?" } do %>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                  <%= link_to receipt_sale_path(sale), class: "p-1.5 text-gray-400 hover:text-purple-600 rounded transition-colors", title: "Imprimir", target: "_blank" do %>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                    </svg>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        <%= @pagy.count %> registro(s)
+      </p>
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>

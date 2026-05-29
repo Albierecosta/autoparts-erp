@@ -1,0 +1,31 @@
+<%= form_with model: [category], class: "space-y-4 max-w-md" do |f| %>
+  <% if category.errors.any? %>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <ul class="text-sm text-red-700 list-disc list-inside"><% category.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-4">
+    <div>
+      <%= f.label :name, "Nome *", class: "form-label" %>
+      <%= f.text_field :name, class: "form-input", placeholder: "Ex: Freios, Suspensão..." %>
+    </div>
+    <div>
+      <%= f.label :description, "Descrição", class: "form-label" %>
+      <%= f.text_area :description, rows: 2, class: "form-input resize-none" %>
+    </div>
+    <div>
+      <%= f.label :position, "Ordem de exibição", class: "form-label" %>
+      <%= f.number_field :position, min: 0, class: "form-input" %>
+    </div>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <%= f.check_box :active, class: "w-4 h-4 rounded border-gray-300 text-blue-600" %>
+      <span class="text-sm text-gray-700 dark:text-gray-300">Categoria ativa</span>
+    </label>
+  </div>
+
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancelar", categories_path, class: "px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 transition-colors" %>
+    <%= f.submit category.persisted? ? "Salvar" : "Criar Categoria", class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+  </div>
+<% end %>

@@ -1,0 +1,46 @@
+<div class="sale-item-row flex items-center gap-2 px-4 py-3 border-b border-gray-100 dark:border-gray-700 last:border-0"
+     data-sale-form-target="itemRow">
+  <%= f.hidden_field :product_id, data: { "sale-form-target": "productId" } %>
+  <%= f.hidden_field :_destroy, value: "false", data: { "sale-form-target": "destroy" } %>
+
+  <div class="flex-1 min-w-0">
+    <p class="text-sm font-medium text-gray-900 dark:text-white truncate"
+       data-sale-form-target="itemName">—</p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 font-mono"
+       data-sale-form-target="itemCode"></p>
+  </div>
+
+  <div class="flex items-center gap-2 flex-shrink-0">
+    <div class="flex items-center gap-1">
+      <button type="button"
+              class="w-7 h-7 flex items-center justify-center rounded bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 font-bold text-lg leading-none"
+              data-action="click->sale-form#decreaseQty">−</button>
+      <%= f.number_field :quantity, min: 1, value: 1,
+          class: "w-12 text-center px-1 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100",
+          data: { "sale-form-target": "qty", action: "input->sale-form#recalculate" } %>
+      <button type="button"
+              class="w-7 h-7 flex items-center justify-center rounded bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 font-bold text-lg leading-none"
+              data-action="click->sale-form#increaseQty">+</button>
+    </div>
+
+    <div class="relative w-28">
+      <span class="absolute inset-y-0 left-0 pl-2 flex items-center text-gray-500 text-xs pointer-events-none">R$</span>
+      <%= f.number_field :unit_price, step: 0.01, min: 0, value: 0,
+          class: "w-full pl-7 pr-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100",
+          data: { "sale-form-target": "unitPrice", action: "input->sale-form#recalculate" } %>
+    </div>
+
+    <div class="w-24 text-right text-sm font-semibold text-gray-900 dark:text-white"
+         data-sale-form-target="itemTotal">
+      R$ 0,00
+    </div>
+
+    <button type="button"
+            class="p-1 text-gray-400 hover:text-red-500 transition-colors flex-shrink-0"
+            data-action="click->sale-form#removeItem">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+</div>

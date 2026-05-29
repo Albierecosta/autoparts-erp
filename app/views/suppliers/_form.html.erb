@@ -1,0 +1,63 @@
+<%= form_with model: [supplier], class: "space-y-6" do |f| %>
+  <% if supplier.errors.any? %>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
+        <% supplier.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="max-w-2xl bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="sm:col-span-2">
+        <%= f.label :name, "Razão Social *", class: "form-label" %>
+        <%= f.text_field :name, class: "form-input", placeholder: "Razão social completa" %>
+      </div>
+      <div>
+        <%= f.label :trade_name, "Nome Fantasia", class: "form-label" %>
+        <%= f.text_field :trade_name, class: "form-input" %>
+      </div>
+      <div>
+        <%= f.label :cnpj, "CNPJ", class: "form-label" %>
+        <%= f.text_field :cnpj, class: "form-input font-mono", placeholder: "00.000.000/0000-00" %>
+      </div>
+      <div>
+        <%= f.label :contact_name, "Contato", class: "form-label" %>
+        <%= f.text_field :contact_name, class: "form-input" %>
+      </div>
+      <div>
+        <%= f.label :phone, "Telefone", class: "form-label" %>
+        <%= f.text_field :phone, class: "form-input", placeholder: "(11) 3000-0000" %>
+      </div>
+      <div>
+        <%= f.label :email, "E-mail", class: "form-label" %>
+        <%= f.email_field :email, class: "form-input" %>
+      </div>
+      <div>
+        <%= f.label :city, "Cidade", class: "form-label" %>
+        <%= f.text_field :city, class: "form-input" %>
+      </div>
+      <div>
+        <%= f.label :state, "Estado", class: "form-label" %>
+        <%= f.text_field :state, maxlength: 2, class: "form-input", placeholder: "SP" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= f.label :notes, "Observações", class: "form-label" %>
+        <%= f.text_area :notes, rows: 2, class: "form-input resize-none" %>
+      </div>
+      <div>
+        <label class="flex items-center gap-3 cursor-pointer mt-2">
+          <%= f.check_box :active, class: "w-4 h-4 rounded border-gray-300 text-blue-600" %>
+          <span class="text-sm text-gray-700 dark:text-gray-300">Fornecedor ativo</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-end gap-3 max-w-2xl">
+    <%= link_to "Cancelar", supplier.persisted? ? supplier_path(supplier) : suppliers_path,
+        class: "px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 transition-colors" %>
+    <%= f.submit supplier.persisted? ? "Salvar Alterações" : "Cadastrar Fornecedor",
+        class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+  </div>
+<% end %>

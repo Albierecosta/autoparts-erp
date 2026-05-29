@@ -1,0 +1,51 @@
+<% content_for :title, "Configurações da Empresa" %>
+
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Configurações da Empresa</h1>
+  <%= link_to edit_settings_company_path, class: "flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg" do %>
+    Editar
+  <% end %>
+</div>
+
+<div class="max-w-2xl space-y-6">
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <h2 class="font-semibold text-gray-900 dark:text-white mb-4">Dados da Empresa</h2>
+    <dl class="grid grid-cols-2 gap-4 text-sm">
+      <div>
+        <dt class="text-gray-500 dark:text-gray-400">Razão Social</dt>
+        <dd class="font-medium text-gray-900 dark:text-white mt-1"><%= current_company.name %></dd>
+      </div>
+      <div>
+        <dt class="text-gray-500 dark:text-gray-400">CNPJ</dt>
+        <dd class="font-mono font-medium text-gray-900 dark:text-white mt-1"><%= current_company.cnpj || "-" %></dd>
+      </div>
+      <div>
+        <dt class="text-gray-500 dark:text-gray-400">Telefone</dt>
+        <dd class="font-medium text-gray-900 dark:text-white mt-1"><%= current_company.phone || "-" %></dd>
+      </div>
+      <div>
+        <dt class="text-gray-500 dark:text-gray-400">E-mail</dt>
+        <dd class="font-medium text-gray-900 dark:text-white mt-1"><%= current_company.email || "-" %></dd>
+      </div>
+      <div class="col-span-2">
+        <dt class="text-gray-500 dark:text-gray-400">Endereço</dt>
+        <dd class="font-medium text-gray-900 dark:text-white mt-1">
+          <%= [current_company.address, current_company.city, current_company.state].compact.join(", ").presence || "-" %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <h2 class="font-semibold text-gray-900 dark:text-white mb-4">E-commerce</h2>
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-900 dark:text-white">Loja Online</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Ativa vendas pelo e-commerce</p>
+      </div>
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= current_company.ecommerce_enabled? ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600" %>">
+        <%= current_company.ecommerce_enabled? ? "Ativo" : "Inativo" %>
+      </span>
+    </div>
+  </div>
+</div>
