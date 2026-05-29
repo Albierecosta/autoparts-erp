@@ -1,13 +1,13 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("DB_HOST", "") %>
-  username: <%= ENV.fetch("DB_USERNAME", ENV.fetch("USER", "postgres")) %>
-  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
+  host: <%= ENV.fetch("DB_HOST", "") %>
+  username: <%= ENV.fetch("DB_USERNAME", ENV.fetch("USER", "postgres")) %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
   database: autoparts_development
 
 test:
@@ -15,9 +15,5 @@ test:
   database: autoparts_test
 
 production:
-  # Railway injeta DATABASE_URL automaticamente — tem prioridade
-  url: <%= ENV["DATABASE_URL"] %>
-  # fallback para variáveis individuais caso DATABASE_URL não exista
   <<: *default
-  database: <%= ENV.fetch("DB_NAME", "autoparts_production") %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV["DATABASE_URL"] %>
