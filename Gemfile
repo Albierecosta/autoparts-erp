@@ -30,7 +30,7 @@ gem "sidekiq"
 gem "sidekiq-scheduler"
 
 # Pagination
-gem "pagy", "~> 9.0"
+gem "pagy", "~> 43.5"
 
 # Search
 gem "pg_search"
