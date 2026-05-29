@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "bin/start",
+    "startCommand": "echo '=== BOOT ===' && bundle exec rails db:migrate 2>&1 && echo '=== SERVER ===' && bundle exec rails server -p ${PORT:-3000} -b 0.0.0.0",
     "healthcheckPath": "/ping",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
