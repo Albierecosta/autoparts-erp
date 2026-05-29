@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get "ping" => proc { [200, {}, ["ok"]] }, as: :ping
 
   resources :products do
     resources :stock_movements, only: [:index, :new, :create], shallow: true

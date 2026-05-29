@@ -5,7 +5,7 @@
   },
   "deploy": {
     "startCommand": "bundle exec rails db:migrate db:seed 2>/dev/null; bundle exec rails server -p $PORT -b 0.0.0.0",
-    "healthcheckPath": "/up",
+    "healthcheckPath": "/ping",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
