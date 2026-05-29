@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["ruby", "nodejs", "postgresql", "libpq", "openssl", "libyaml", "zlib", "vips"]
+
+[phases.install]
+cmds = ["bundle install"]
+
+[phases.build]
+cmds = [
+  "bundle exec rails tailwindcss:build",
+  "SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile"
+]
+
+[start]
+cmd = "bundle exec rails db:migrate db:seed 2>/dev/null; bundle exec rails server -p $PORT -b 0.0.0.0"
