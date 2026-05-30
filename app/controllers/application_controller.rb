@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include Pagy::Backend
 
+  before_action :set_locale
   before_action :authenticate_user!
   before_action :set_current_company
   before_action :check_company_active
@@ -15,6 +16,10 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
+
+  def set_locale
+    I18n.locale = :"pt-BR"
+  end
 
   def set_current_company
     @current_company = current_user&.company
